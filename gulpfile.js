@@ -1,7 +1,10 @@
 var gulp = require('gulp');
-var print = require('gulp-print');
 var exec = require('child_process').exec;
+var gutil = require('gulp-util');
 var coffee = require('gulp-coffee');
+var cjsx = require('gulp-cjsx');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 var fs = require('fs');
 
 gulp.task('default', function() {
@@ -9,18 +12,26 @@ gulp.task('default', function() {
 });
 
 gulp.task('init', function (cb) {
-  fs.writeFileSync('comments.json', JSON.stringify([]))
+  fs.writeFileSync('comments.json', JSON.stringify([]));
 });
 
-gulp.task('start', function (cb) {
-  gulp.src('./*.coffee')
-    .pipe(coffee())
-    .pipe(print())
-    .pipe(gulp.dest('./'))
+gulp.task('compile', function(){
+  gulp.src('./*.cjsx')
+    .pipe(cjsx({bare: true}).on('error', gutil.log))
+    .pipe(gulp.dest('./'));
 
-  exec('cjsx -c main.cjsx')
+    gulp.src('./*.coffee')
+      .pipe(coffee())
+      .pipe(gulp.dest('./'));
+});
 
-  exec('browserify -t [ babelify --presets [ react ] ] main.js -o bundle.js')
+gulp.task('browserify', function(){
+  browserify("./main.js")
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest('./'));
+});
 
-  exec('node index.js')
+gulp.task('run', function (cb) {
+  exec('node index.js');
 })

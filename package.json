@@ -9,17 +9,17 @@
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
-    "coffee-react": "^4.1.0",
-    "coffee-script": "^1.10.0",
+    "gulp-cjsx": "^3.0.0",
     "gulp-cli": "^1.2.1",
     "gulp-coffee": "^2.3.1",
-    "gulp-print": "^2.0.1",
+    "gulp-util": "^3.0.7",
     "koa": "^1.2.0",
     "koa-body": "^1.4.0",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
     "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "vinyl-source-stream": "^1.1.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1"

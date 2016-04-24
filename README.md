@@ -11,5 +11,7 @@ https://github.com/reactjs/react-tutorial
 ```sh
 npm install
 gulp init
-gulp start
+gulp compile
+gulp browserify
+gulp run
 ```

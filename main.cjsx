@@ -2,41 +2,41 @@ React = require('react')
 ReactDOM = require('react-dom')
 window.onload = ->
 
-  CommentBox = React.createClass({
+  CommentBox = React.createClass {
     loadCommentsFromServer: ->
-      $.ajax({
+      $.ajax {
         url: this.props.url,
         dataType: 'json',
         cache: false,
         success: (data) =>
-          this.setState({data: data})
+          this.setState {data: data}
         error: (xhr, status, err) =>
-          console.error(this.props.url, status, err.toString())
-      })
+          console.error this.props.url, status, err.toString()
+      }
 
     handleCommentSubmit: (comment) ->
       comments = this.state.data
       comment.id = Date.now()
-      newComments = comments.concat([comment])
-      this.setState({data: newComments})
-      $.ajax({
+      newComments = comments.concat [comment]
+      this.setState {data: newComments}
+      $.ajax {
         url: this.props.url,
         dataType: 'json',
         type: 'POST',
         data: comment,
         success: (data) =>
-          this.setState({data: data});
+          this.setState {data: data};
         error: (xhr, status, err) =>
-          this.setState({data: comments})
-          console.error(this.props.url, status, err.toString())
-      })
+          this.setState {data: comments}
+          console.error this.props.url, status, err.toString()
+      }
 
     getInitialState: ->
       return {data: []}
 
     componentDidMount: ->
       this.loadCommentsFromServer()
-      setInterval(this.loadCommentsFromServer, this.props.pollInterval)
+      setInterval this.loadCommentsFromServer, this.props.pollInterval
 
     render: ->
       return(
@@ -46,9 +46,9 @@ window.onload = ->
           <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
         </div>
       )
-  })
+  }
 
-  CommentList = React.createClass({
+  CommentList = React.createClass {
     render: ->
       commentNodes = this.props.data.map (comment) ->
         return (
@@ -61,25 +61,25 @@ window.onload = ->
           {commentNodes}
         </div>
       )
-  })
+  }
 
-  CommentForm = React.createClass({
+  CommentForm = React.createClass {
     getInitialState: ->
       return {author: '', text: ''}
 
     handleAuthorChange: (e) ->
-      this.setState({author: e.target.value})
+      this.setState {author: e.target.value}
 
     handleTextChange: (e) ->
-      this.setState({text: e.target.value})
+      this.setState {text: e.target.value}
 
     handleSubmit: (e) ->
       e.preventDefault()
       author = this.state.author.trim()
       text = this.state.text.trim()
       if text? and author?
-        this.props.onCommentSubmit({author: author, text: text})
-        this.setState({author: '', text: ''})
+        this.props.onCommentSubmit {author: author, text: text}
+        this.setState {author: '', text: ''}
 
     render: ->
       return (
@@ -99,11 +99,11 @@ window.onload = ->
           <input type="submit" value="Post" />
         </form>
       )
-  })
+  }
 
-  Comment = React.createClass({
+  Comment = React.createClass {
     rawMarkup: ->
-      rawMarkup = marked(this.props.children.toString(), {sanitize: true})
+      rawMarkup = marked this.props.children.toString(), {sanitize: true}
       return {__html: rawMarkup}
     render: ->
       return (
@@ -114,7 +114,7 @@ window.onload = ->
           <span dangerouslySetInnerHTML={this.rawMarkup()} />
         </div>
       )
-  })
+  }
 
   ReactDOM.render(
     <CommentBox url="/api/comments" pollInterval={2000} />,
